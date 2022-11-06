@@ -1,4 +1,7 @@
 ---
+server:
+  port: ${APP_PORT}
+
 spring:
   config:
     activate:
@@ -8,9 +11,9 @@ spring:
   liquibase:
     enabled: false
   datasource:
-    url: jdbc:postgresql://${env.PGHOST}:${env.PGPORT}/${env.PGDATABASE}
-    username: ${env.PGUSER}
-    password: ${env.PGPASSWORD}
+    url: jdbc:postgresql://${env.PG_HOST}:${env.PG_PORT}/${env.PG_DATABASE}
+    username: ${env.PG_USER}
+    password: ${env.PG_PASSWORD}
 
   jpa:
     databasePlatform: org.hibernate.dialect.PostgreSQLDialect
@@ -27,6 +30,9 @@ management:
 
 
 ---
+server:
+  port: ${APP_PORT}
+
 spring:
   config:
     activate:
