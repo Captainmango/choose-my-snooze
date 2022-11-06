@@ -9,6 +9,8 @@ This project is a fake one focused on improving DevOps skills and multi-tenancy.
 Ideally, I'd like to add in:
 - SMTP server for sending mail
 - A front end to drive the API
+- Prometheus instance for metrics
+- Redis for caching stuff (not sure what needs caching yet)
 
 The idea is to build deployment pipelines and upload docker images to a container registry (AWS ECR) and use these in deployment builds to whatever infrastructure I want to use (not wholly settled yet, but will likely be AWS EC2 instances)
 
