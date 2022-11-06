@@ -1,0 +1,95 @@
+import java.util.Date
+
+plugins {
+	id 'org.springframework.boot' version '2.7.5'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'java'
+	id 'org.liquibase.gradle' version '2.1.1'
+	id "co.uzzu.dotenv.gradle" version "2.0.0"
+}
+
+group = 'com.org'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	compileOnly 'org.projectlombok:lombok'
+	liquibaseRuntime sourceSets.main.output
+
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'me.paulschwarz:spring-dotenv:2.5.4'
+
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	testRuntimeOnly 'com.h2database:h2'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+	runtimeOnly 'org.postgresql:postgresql'
+
+	liquibaseRuntime 'org.postgresql:postgresql:42.2.24'
+	liquibaseRuntime 'org.liquibase:liquibase-core:4.17.1'
+	liquibaseRuntime 'org.liquibase.ext:liquibase-hibernate5:4.17.0'
+	liquibaseRuntime 'org.springframework.boot:spring-boot-starter-data-jpa'
+	liquibaseRuntime 'info.picocli:picocli:4.6.3'
+}
+
+apply plugin: "org.liquibase.gradle"
+
+def getTimestamp() {
+	def date = new Date()
+	return date.format('yyyyMMddHHmm')
+}
+
+final MIGR_NAME = "src/main/resources/db/changelogs/changelog_" + getTimestamp() + ".yaml"
+
+liquibase {
+	activities {
+		main {
+			changeLogFile "$MIGR_NAME"
+			url "jdbc:postgresql://$env.PGHOST.value:$env.PGPORT.value/$env.PGDATABASE.value"
+			username "$env.PGUSER.value"
+			password "$env.PGPASSWORD.value"
+			classpath "$rootDir"
+			driver "org.postgresql.Driver"
+			referenceUrl "hibernate:spring:com.org.choosemysnooze?dialect=org.hibernate.dialect.PostgreSQLDialect" +
+					"&hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy" +
+					"&hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy"
+		}
+	}
+}
+
+task('deploy changeLog') {
+	doFirst(){
+		liquibase {
+			activities {
+				main {
+					changeLogFile "src/main/resources/db/root-changelog.yaml"
+				}
+			}
+		}
+	}
+}
+update.dependsOn('deploy changeLog')
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+def profile = 'prod'
+bootRun {
+	systemProperty "spring.profiles.active", profile
+}
