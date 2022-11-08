@@ -1,6 +1,6 @@
 ---
 server:
-  port: ${APP_PORT}
+  port: ${env.APP_PORT}
 
 spring:
   config:
@@ -31,7 +31,7 @@ management:
 
 ---
 server:
-  port: ${APP_PORT}
+  port: ${env.APP_PORT}
 
 spring:
   config:
