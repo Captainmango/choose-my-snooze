@@ -1,0 +1,156 @@
+databaseChangeLog:
+- changeSet:
+    id: 1667944917745-1
+    author: edwardh (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: bedsPK
+            name: id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: name
+            type: VARCHAR(255)
+        - column:
+            name: price
+            type: FLOAT4
+        - column:
+            constraints:
+              nullable: false
+            name: product_code
+            type: VARCHAR(255)
+        - column:
+            name: created_at
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            name: updated_at
+            type: TIMESTAMP WITHOUT TIME ZONE
+        tableName: beds
+- changeSet:
+    id: 1667944917745-2
+    author: edwardh (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+            name: order_id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: bed_id
+            type: BIGINT
+        tableName: order_beds
+- changeSet:
+    id: 1667944917745-3
+    author: edwardh (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: ordersPK
+            name: id
+            type: BIGINT
+        - column:
+            name: user_id
+            type: BIGINT
+        - column:
+            name: created_at
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            name: updated_at
+            type: TIMESTAMP WITHOUT TIME ZONE
+        tableName: orders
+- changeSet:
+    id: 1667944917745-4
+    author: edwardh (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: usersPK
+            name: id
+            type: BIGINT
+        - column:
+            name: identity
+            type: VARCHAR(255)
+        - column:
+            name: created_at
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            name: updated_at
+            type: TIMESTAMP WITHOUT TIME ZONE
+        tableName: users
+- changeSet:
+    id: 1667944917745-5
+    author: edwardh (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: name
+        constraintName: UC_BEDSNAME_COL
+        tableName: beds
+- changeSet:
+    id: 1667944917745-6
+    author: edwardh (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: product_code
+        constraintName: UC_BEDSPRODUCT_CODE_COL
+        tableName: beds
+- changeSet:
+    id: 1667944917745-7
+    author: edwardh (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: user_id
+        baseTableName: orders
+        constraintName: FK32ql8ubntj5uh44ph9659tiih
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: users
+        validate: true
+- changeSet:
+    id: 1667944917745-8
+    author: edwardh (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: order_id
+        baseTableName: order_beds
+        constraintName: FKbnub8eey1g5173fu1xhpsdafl
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: orders
+        validate: true
+- changeSet:
+    id: 1667944917745-9
+    author: edwardh (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: bed_id
+        baseTableName: order_beds
+        constraintName: FKsitqjxol4711jqhear07dtepq
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: beds
+        validate: true
+

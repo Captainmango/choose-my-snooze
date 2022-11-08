@@ -49,9 +49,11 @@ dependencies {
 
 apply plugin: "org.liquibase.gradle"
 
+diffChangeLog.dependsOn compileJava
+
 def getTimestamp() {
 	def date = new Date()
-	return date.format('yyyyMMddHHmm')
+	return date.format('yyyyMMddHHmmss')
 }
 
 final MIGR_NAME = "src/main/resources/db/changelogs/changelog_" + getTimestamp() + ".yaml"
@@ -71,6 +73,19 @@ liquibase {
 		}
 	}
 }
+
+task('rollback changelog') {
+	doFirst(){
+		liquibase {
+			activities {
+				main {
+					changeLogFile "src/main/resources/db/root-changelog.yaml"
+				}
+			}
+		}
+	}
+}
+rollbackToDate.dependsOn('rollback changelog')
 
 task('deploy changeLog') {
 	doFirst(){
