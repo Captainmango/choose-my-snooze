@@ -50,5 +50,12 @@ The migration system will auto generate migrations based on the entities present
 $ ./gradlew diffChangeLog
 ```
 
-first to generate the migration with the correct format then change it to your needs. Regardless, once you have done this, please save it at the bottom of the root changelog using an include key. Check the Liquibase documentation for more details on how this works. Eventually, I want this to happen automatically (probs need to write a script that inserts a heredoc and run after the task is complete)
+first to generate the migration with the correct format then change it to your needs. The root migration file includes all the migrations inside the changelog directory automatically. There is no need to do anything else aside from running the migration.
+
+To rollback a migration, run the command:
+```bash
+$ ./gradlew rollbackCount -PliquibaseCommandValue=1 
+```
+
+This will roll back the last migration ran against the database. You can roll back as many migrations as you want this way by changing the command value.
 

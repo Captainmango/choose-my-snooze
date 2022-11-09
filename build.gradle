@@ -90,7 +90,7 @@ task('rollback changelog') {
 		}
 	}
 }
-rollbackToDate.dependsOn('rollback changelog')
+rollbackCount.dependsOn('rollback changelog')
 
 task('deploy changeLog') {
 	doFirst(){
