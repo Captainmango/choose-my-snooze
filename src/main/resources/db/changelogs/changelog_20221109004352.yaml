@@ -1,0 +1,12 @@
+databaseChangeLog:
+- changeSet:
+    id: 1667954638243-3
+    author: edwardh (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: order_id
+        indexName: order_index
+        tableName: order_beds
+

@@ -22,6 +22,19 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: "http://localhost:8080/realms/choose-my-snooze"
+            user-name-attribute: preferred_username
+        registration:
+          keycloak:
+            client-id: "cms-app"
+            authorization-grant-type: authorization_code
+            scope: openid
+
 management:
   endpoints:
     web:

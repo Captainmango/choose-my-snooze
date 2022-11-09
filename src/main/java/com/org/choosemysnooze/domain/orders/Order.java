@@ -40,7 +40,10 @@ public class Order
     @JoinTable(
             name = "order_beds",
             joinColumns = @JoinColumn(name = "order_id"),
-            inverseJoinColumns = @JoinColumn(name = "bed_id")
+            inverseJoinColumns = @JoinColumn(name = "bed_id"),
+            indexes = {
+                    @Index(name = "order_index", columnList = "order_id")
+            }
     )
     private List<Bed> beds = new ArrayList<>();
 

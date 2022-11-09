@@ -2,7 +2,6 @@ package com.org.choosemysnooze.domain.beds;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
@@ -38,11 +37,6 @@ public class Bed
     private String name;
 
     @Getter
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
     @Column(
             name = "product_code",
             nullable = false,

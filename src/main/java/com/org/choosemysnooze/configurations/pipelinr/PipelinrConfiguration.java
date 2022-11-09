@@ -1,4 +1,4 @@
-package com.org.choosemysnooze.configurations;
+package com.org.choosemysnooze.configurations.pipelinr;
 
 import an.awesome.pipelinr.Command;
 import an.awesome.pipelinr.Notification;
