@@ -67,9 +67,9 @@ liquibase {
 	activities {
 		main {
 			changeLogFile "$MIGR_NAME"
-			url "jdbc:postgresql://$env.PG_HOST.orElse('localhost'):$env.PG_PORT.orElse('5432')/$env.PG_DATABASE.orElse('db')"
-			username "$env.PG_USER.orElse("")"
-			password "$env.PG_PASSWORD.value.orElse("")"
+			url "jdbc:postgresql://${env.fetchOrNull('PG_HOST')}:${env.fetchOrNull('PG_PORT')}/${env.fetchOrNull('PG_DATABASE')}"
+			username "${env.PG_USER.orElse("")}"
+			password "${env.PG_PASSWORD.orElse("")}"
 			classpath "$rootDir"
 			driver "org.postgresql.Driver"
 			referenceUrl "hibernate:spring:com.org.choosemysnooze?dialect=org.hibernate.dialect.PostgreSQLDialect" +
