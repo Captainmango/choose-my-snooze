@@ -11,7 +11,6 @@ import org.springframework.security.web.authentication.session.RegisterSessionAu
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 
 @Configuration
-@EnableWebSecurity
 class SecurityConfiguration {
 
     private final KeycloakLogoutHandler keycloakLogoutHandler;
