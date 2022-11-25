@@ -7,14 +7,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-//@SpringBootTest
-//class ChooseMySnoozeApplicationTests extends IntegratedTest{
-//
-//	@Autowired
-//	private OrdersController ordersController;
-//
-//	@Test
-//	void contextLoads() {
-//		assertNotNull(ordersController);
-//	}
-//}
+@SpringBootTest
+class ChooseMySnoozeApplicationTests extends IntegratedKeycloakTest {
+
+	@Autowired
+	private OrdersController ordersController;
+
+	@Test
+	void contextLoads() {
+		assertNotNull(ordersController);
+	}
+}

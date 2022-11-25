@@ -22,17 +22,6 @@ repositories {
 	mavenCentral()
 }
 
-//sourceSets {
-//	test {
-//		resources {
-//			srcDirs = ["src/test/resources"]
-//			includes = ["**/*.json"]
-//		}
-//	}
-//}
-//
-//sourceSets.test.resources.srcDir 'src/test/resources'
-
 dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	liquibaseRuntime sourceSets.main.output
