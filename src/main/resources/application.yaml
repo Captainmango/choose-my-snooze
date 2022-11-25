@@ -50,7 +50,7 @@ management:
 ---
 server:
   port: ${env.APP_PORT}
-  keycloak-db-host: localhost
+  keycloak-db-port: 5432
 
 spring:
   config:
