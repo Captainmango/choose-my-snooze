@@ -1,9 +1,4 @@
----
-spring:
-  profiles:
-    active: test
 
----
 server:
   port: ${env.APP_PORT}
 
@@ -45,44 +40,3 @@ management:
     web:
       exposure:
         include: "health"
-
-
----
-server:
-  port: ${env.APP_PORT}
-
-spring:
-  config:
-    activate:
-      on-profile: test
-  name: test-yaml
-  environment: testing
-  liquibase:
-    enabled: false
-  h2:
-    console:
-      enabled: true
-  datasource:
-    username: "sa"
-    url: jdbc:h2:mem:testdb
-    password: ""
-  jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
-    properties:
-      hibernate:
-        format_sql: true
-    hibernate:
-      ddl-auto: create-drop
-
-  security:
-    oauth2:
-      client:
-        provider:
-          keycloak:
-            issuer-uri: "http://localhost:8080/realms/choose-my-snooze"
-            user-name-attribute: preferred_username
-        registration:
-          keycloak:
-            client-id: "cms-app"
-            authorization-grant-type: authorization_code
-            scope: openid
