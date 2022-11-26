@@ -18,7 +18,6 @@ public abstract class IntegratedKeycloakTest
             .withAdminPassword("password")
             .withExposedPorts(8080);
 
-
     @DynamicPropertySource
     static void registerNewIssuerUri(DynamicPropertyRegistry registry)
     {
