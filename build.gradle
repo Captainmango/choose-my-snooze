@@ -9,7 +9,7 @@ plugins {
 }
 
 group = 'com.org'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.1'
 sourceCompatibility = '17'
 
 configurations {
@@ -20,6 +20,12 @@ configurations {
 
 repositories {
 	mavenCentral()
+}
+
+jar {
+	manifest {
+		attributes "Main-Class": "com/org/choosemysnooze/ChooseMySnoozeApplication"
+	}
 }
 
 dependencies {

@@ -1,4 +1,5 @@
 version: "3.1"
+# Networks for containers to make app container work. Currently, is using localhost vars
 services:
   db:
     image: postgres:13
@@ -25,6 +26,7 @@ services:
       - POSTGRESQL_DATABASE=${KEYCLOAK_DB}
 
   keycloak:
+    container_name: keycloak-server
     image: docker.io/bitnami/keycloak:latest
     networks:
       - keycloak
@@ -39,6 +41,7 @@ services:
       - KEYCLOAK_DATABASE_PASSWORD=${KEYCLOAK_DB_PASSWORD}
       - KEYCLOAK_ADMIN_USER=${KEYCLOAK_ADMIN_USER}
       - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD}
+
 
 volumes:
   pg_data:
