@@ -21,7 +21,7 @@ public class GetUsersOrdersUseCase implements Command.Handler<GetUsersOrdersRequ
 
     @Override
     public GetUsersOrdersResponse handle(GetUsersOrdersRequest getUsersOrdersRequest) {
-        var user = userRepository.findById(getUsersOrdersRequest.getUserId()).orElseThrow();
+        var user = userRepository.findByIdentity(getUsersOrdersRequest.getUserIdentity()).orElseThrow();
 
         return processResponse(orderRepository.findByUserIs(user));
     }

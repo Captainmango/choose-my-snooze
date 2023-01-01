@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class GetUsersOrdersRequest implements Command<GetUsersOrdersResponse>
 {
-    private long userId;
+    private String userIdentity;
 }
