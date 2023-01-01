@@ -1,8 +1,6 @@
-package com.org.choosemysnooze;
+package com.org.choosemysnooze.domain.orders;
 
 import an.awesome.pipelinr.Pipeline;
-import com.org.choosemysnooze.api.controllers.orders.OrdersController;
-import com.org.choosemysnooze.domain.orders.Order;
 import com.org.choosemysnooze.domain.orders.usecases.getUsersOrders.GetUsersOrdersRequest;
 import com.org.choosemysnooze.domain.orders.usecases.getUsersOrders.GetUsersOrdersResponse;
 import org.junit.jupiter.api.BeforeEach;

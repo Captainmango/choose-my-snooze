@@ -41,6 +41,7 @@ dependencies {
 	implementation 'me.paulschwarz:spring-dotenv:2.5.4'
 	implementation 'net.sizovs:pipelinr:0.7'
 	implementation 'com.github.dasniko:testcontainers-keycloak:2.4.0'
+	implementation 'info.picocli:picocli:4.7.0'
 
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testRuntimeOnly 'com.h2database:h2'

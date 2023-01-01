@@ -1,4 +1,4 @@
-package com.org.choosemysnooze.api.controllers;
+package com.org.choosemysnooze.internal;
 
 import an.awesome.pipelinr.Pipeline;
 import org.springframework.beans.factory.annotation.Autowired;

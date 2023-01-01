@@ -1,6 +1,6 @@
-package com.org.choosemysnooze.api.controllers.orders;
+package com.org.choosemysnooze.domain.orders;
 
-import com.org.choosemysnooze.api.controllers.BaseController;
+import com.org.choosemysnooze.internal.BaseController;
 import com.org.choosemysnooze.domain.orders.usecases.getUsersOrders.GetUsersOrdersRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
