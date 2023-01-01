@@ -22,6 +22,7 @@ public abstract class IntegratedKeycloakTest implements CreatesMockUsers
             .withAdminPassword("password")
             .withExposedPorts(8080);
 
+    // @TODO: Figure out why this doesn't work properly. Seems to not be overwriting the test application.properties
     @DynamicPropertySource
     static void registerNewIssuerUri(DynamicPropertyRegistry registry)
     {
