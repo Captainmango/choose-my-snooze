@@ -14,8 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class OrdersController extends BaseController
 {
     @GetMapping(path = "/", produces = "application/json")
-    public ResponseEntity<?> getUsersOrders()
-    {
+    public ResponseEntity<?> getUsersOrders() {
         var request = GetUsersOrdersRequest.builder()
                 .userId(1)
                 .build();
