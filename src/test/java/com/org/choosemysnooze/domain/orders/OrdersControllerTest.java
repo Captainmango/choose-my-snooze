@@ -1,18 +1,15 @@
 package com.org.choosemysnooze.domain.orders;
 
 import com.org.choosemysnooze.BaseControllerTest;
-import com.org.choosemysnooze.domain.orders.usecases.getUsersOrders.GetUsersOrdersRequest;
-import com.org.choosemysnooze.domain.orders.usecases.getUsersOrders.GetUsersOrdersResponse;
+import com.org.choosemysnooze.fixtures.OrdersFixture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.List;
-
 import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -23,28 +20,20 @@ public class OrdersControllerTest extends BaseControllerTest
 
     private MockMvc mockMvc;
 
+    @Autowired
+    private OrdersFixture ordersFixture;
+
     @BeforeEach
     public void setUp()
     {
+        this.createMockUser();
         mockMvc = MockMvcBuilders.standaloneSetup(ordersController).build();
     }
 
     @Test
     public void testUsersCanHaveOrders() throws Exception
     {
-        var request = GetUsersOrdersRequest.builder()
-                .userIdentity("1")
-                .build();
-
-        when(pipeline.send(request))
-                .thenReturn(
-                        GetUsersOrdersResponse.builder().orders(
-                                List.of(
-                                    Order.builder().build()
-                                )
-                        ).build()
-                );
-
+        ordersFixture.run();
         mockMvc.perform(get("/api/v1/orders/")).andExpectAll(
                 status().isOk(),
                 jsonPath("$.orders", hasSize(1))

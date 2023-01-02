@@ -1,6 +1,9 @@
 package com.org.choosemysnooze.fixtures;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public interface BaseFixture
 {
-    static void run() {}
+    void run() throws Exception;
 }

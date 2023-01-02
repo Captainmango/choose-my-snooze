@@ -15,10 +15,8 @@ public class OrdersController extends BaseController
 {
     @GetMapping(path = "/", produces = "application/json")
     public ResponseEntity<?> getUsersOrders() {
-//        var userIdentity = userAuthService.getIdentity(auth);
-
         var request = GetUsersOrdersRequest.builder()
-                .userIdentity("1")
+                .userIdentity(userAuthService.getIdentity())
                 .build();
 
         var response = pipeline.send(request);

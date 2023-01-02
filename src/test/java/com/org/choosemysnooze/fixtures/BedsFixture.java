@@ -2,6 +2,7 @@ package com.org.choosemysnooze.fixtures;
 
 import com.org.choosemysnooze.domain.beds.Bed;
 import com.org.choosemysnooze.domain.beds.BedRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -9,12 +10,10 @@ import java.util.List;
 @Component
 public class BedsFixture implements BaseFixture
 {
-    private final BedRepository bedRepository;
+    @Autowired
+    private BedRepository bedRepository;
 
-    public BedsFixture(BedRepository bedRepository) {
-        this.bedRepository = bedRepository;
-    }
-
+    @Override
     public void run()
     {
         if (bedRepository.findAll().size() == 0) {
