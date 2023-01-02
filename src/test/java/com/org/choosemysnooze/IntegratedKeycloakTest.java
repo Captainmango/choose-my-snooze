@@ -21,6 +21,10 @@ public abstract class IntegratedKeycloakTest
     @DynamicPropertySource
     static void registerNewIssuerUri(DynamicPropertyRegistry registry)
     {
+<<<<<<< Updated upstream
         registry.add("spring.security.client.provider.keycloak.issuer-uri", () -> keycloak.getAuthServerUrl() + "/realms/master");
+=======
+        registry.add("spring.security.oauth2.client.provider.keycloak.issuer-uri", () -> keycloak.getAuthServerUrl() + "realms/choose-my-snooze");
+>>>>>>> Stashed changes
     }
 }
