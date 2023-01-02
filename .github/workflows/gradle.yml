@@ -18,7 +18,7 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  system-test:
 
     runs-on: ubuntu-latest
 
