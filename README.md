@@ -1,5 +1,7 @@
 # Choose my snooze
 ___
+[![Java CI with Gradle](https://github.com/Captainmango/choose-my-snooze/actions/workflows/gradle.yml/badge.svg)](https://github.com/Captainmango/choose-my-snooze/actions/workflows/gradle.yml)
+
 This project is a fake one focused on improving DevOps skills and multi-tenancy. The project has:
 - A main app database
 - An API
