@@ -1,14 +1,18 @@
 package com.org.choosemysnooze.domain.orders;
 
+import an.awesome.pipelinr.Voidy;
 import com.org.choosemysnooze.BaseSystemTest;
 import com.org.choosemysnooze.CreatesMockUsers;
+import com.org.choosemysnooze.common.exceptions.NotFoundException;
 import com.org.choosemysnooze.domain.beds.Bed;
+import com.org.choosemysnooze.domain.orders.usecases.OrderBedRequest.OrderBedsRequest;
 import com.org.choosemysnooze.domain.orders.usecases.getUsersOrders.GetUsersOrdersRequest;
 import com.org.choosemysnooze.domain.orders.usecases.getUsersOrders.GetUsersOrdersResponse;
 import com.org.choosemysnooze.domain.users.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -52,7 +56,7 @@ public class OrdersControllerTest extends BaseSystemTest
         when(userAuthService.getIdentity()).thenReturn(CreatesMockUsers.DEFAULT_SUBJECT);
         when(pipeline.send(request)).thenReturn(response);
 
-        mockMvc.perform(get("/api/v1/orders/")).andExpectAll(
+        mockMvc.perform(get("/api/v1/orders")).andExpectAll(
                 status().isOk(),
                 jsonPath("$.orders", hasSize(1))
         );
@@ -60,63 +64,87 @@ public class OrdersControllerTest extends BaseSystemTest
         verify(userAuthService).getIdentity();
         verify(pipeline).send(request);
     }
-//    @Test
-//    public void testUserCanPlaceOrderForBed() throws Exception
-//    {
-//        var request = OrderBedRequest.builder()
-//                .userId(1)
-//                .bedIds(List.of("b"))
-//                .build();
-//
-//        var jsonRequest = mapper.writeValueAsString(request);
-//
-//        mockMvc.perform(post("/api/v1/orders", jsonRequest)).andExpect(
-//                status().isAccepted()
-//        );
-//    }
-//
-//    @Test
-//    public void testOrderNotPlacedForNonexistentBed() throws Exception
-//    {
-//        var request = OrderBedRequest.builder()
-//                .userId(1)
-//                .bedId(List.of("random string"))
-//                .build();
-//
-//        var jsonRequest = mapper.writeValueAsString(request);
-//
-//        mockMvc.perform(post("/api/v1/orders", jsonRequest)).andExpect(
-//                status().isNotFound()
-//        );
-//    }
-//
-//    @Test
-//    public void testOrderMultipleBeds() throws Exception
-//    {
-//        var request = OrderBedRequest.builder()
-//                .userId(1)
-//                .bedId(List.of("a", "b", "c"))
-//                .build();
-//
-//        var jsonRequest = mapper.writeValueAsString(request);
-//
-//        mockMvc.perform(post("/api/v1/orders", jsonRequest)).andExpect(
-//                status().isAccepted()
-//        );
-//    }
-//
-//    @Test
-//    public void testOrderMultipleBedsSomeExistSomeDoNot() throws Exception
-//    {
-//        var request = OrderBedRequest.builder()
-//                .userId(1)
-//                .bedId(List.of("a", "random string", "b"))
-//                .build();
-//
-//        var jsonRequest = mapper.writeValueAsString(request);
-//
-//        mockMvc.perform(post("/api/v1/orders", jsonRequest)).andExpect(
-//                status().isNotFound()
-//        );
-//    }
+    @Test
+    public void testUserCanPlaceOrderForBed() throws Exception
+    {
+        var request = OrderBedsRequest.builder()
+                .bedIds(List.of("b"))
+                .build();
+
+        var jsonRequest = mapper.writeValueAsString(request);
+
+        when(pipeline.send(request)).thenReturn(new Voidy());
+
+        mockMvc.perform(post("/api/v1/orders")
+                .content(jsonRequest)
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                status().isCreated()
+        );
+
+        verify(pipeline).send(request);
+    }
+
+    @Test
+    public void testOrderNotPlacedForNonexistentBedNoOrderPlaced() throws Exception
+    {
+        var request = OrderBedsRequest.builder()
+                .bedIds(List.of("random string"))
+                .build();
+
+        var jsonRequest = mapper.writeValueAsString(request);
+
+        when(pipeline.send(request)).thenThrow(NotFoundException.class);
+
+        mockMvc.perform(post("/api/v1/orders")
+                .content(jsonRequest)
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                status().isNotFound()
+        );
+
+        verify(pipeline).send(request);
+    }
+
+    @Test
+    public void testOrderMultipleBeds() throws Exception
+    {
+        var request = OrderBedsRequest.builder()
+                .bedIds(List.of("a", "b", "c"))
+                .build();
+
+        var jsonRequest = mapper.writeValueAsString(request);
+
+        when(pipeline.send(request)).thenReturn(new Voidy());
+
+        mockMvc.perform(post("/api/v1/orders")
+                .content(jsonRequest)
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                status().isCreated()
+        );
+
+        verify(pipeline).send(request);
+    }
+
+    @Test
+    public void testOrderMultipleBedsSomeExistSomeDoNotPartialOrderPlaced() throws Exception
+    {
+        var request = OrderBedsRequest.builder()
+                .bedIds(List.of("a", "random string", "b"))
+                .build();
+
+        var jsonRequest = mapper.writeValueAsString(request);
+
+        when(pipeline.send(request)).thenReturn(new Voidy());
+
+        mockMvc.perform(post("/api/v1/orders")
+                .content(jsonRequest)
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                status().isCreated()
+        );
+
+        verify(pipeline).send(request);
+    }
 }

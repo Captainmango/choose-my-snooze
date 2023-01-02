@@ -1,4 +1,4 @@
-package com.org.choosemysnooze.internal;
+package com.org.choosemysnooze.common;
 
 import an.awesome.pipelinr.Pipeline;
 import com.org.choosemysnooze.domain.users.UserAuthService;
