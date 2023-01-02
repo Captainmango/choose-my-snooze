@@ -1,27 +1,31 @@
 package com.org.choosemysnooze.domain.orders;
 
-import com.org.choosemysnooze.BaseControllerTest;
-import com.org.choosemysnooze.fixtures.OrdersFixture;
+import com.org.choosemysnooze.BaseSystemTest;
+import com.org.choosemysnooze.CreatesMockUsers;
+import com.org.choosemysnooze.domain.beds.Bed;
+import com.org.choosemysnooze.domain.orders.usecases.getUsersOrders.GetUsersOrdersRequest;
+import com.org.choosemysnooze.domain.orders.usecases.getUsersOrders.GetUsersOrdersResponse;
+import com.org.choosemysnooze.domain.users.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.List;
+
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-public class OrdersControllerTest extends BaseControllerTest
+public class OrdersTest extends BaseSystemTest
 {
     @InjectMocks
     private OrdersController ordersController;
 
     private MockMvc mockMvc;
-
-    @Autowired
-    private OrdersFixture ordersFixture;
 
     @BeforeEach
     public void setUp()
@@ -33,11 +37,28 @@ public class OrdersControllerTest extends BaseControllerTest
     @Test
     public void testUsersCanHaveOrders() throws Exception
     {
-        ordersFixture.run();
+        var request = GetUsersOrdersRequest.builder()
+            .userIdentity(CreatesMockUsers.DEFAULT_SUBJECT)
+            .build();
+
+        var response = GetUsersOrdersResponse.builder()
+            .orders(List.of(
+                Order.builder()
+                    .beds(List.of(Bed.builder().name("TestBed1").price(234f).productCode("34").build()))
+                    .user(User.builder().build())
+                    .build()
+                )).build();
+
+        when(userAuthService.getIdentity()).thenReturn(CreatesMockUsers.DEFAULT_SUBJECT);
+        when(pipeline.send(request)).thenReturn(response);
+
         mockMvc.perform(get("/api/v1/orders/")).andExpectAll(
                 status().isOk(),
                 jsonPath("$.orders", hasSize(1))
         );
+
+        verify(userAuthService).getIdentity();
+        verify(pipeline).send(request);
     }
 //    @Test
 //    public void testUserCanPlaceOrderForBed() throws Exception
