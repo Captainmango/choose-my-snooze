@@ -6,8 +6,8 @@ import com.org.choosemysnooze.domain.users.UserAuthService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.test.context.support.WithMockUser;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
@@ -20,11 +20,17 @@ class ChooseMySnoozeApplicationTests extends IntegratedKeycloakTest {
 	private UserAuthService userAuthService;
 
 	@Test
-	@WithMockUser
-	void contextLoads() {
-		var val = this.createAuthorisedUser();
-		System.out.println(val);
-		System.out.println(userAuthService.getIdentity());
+	void contextLoads()
+	{
 		assertNotNull(ordersController);
+	}
+
+	// @TODO: Change this for an actual call to the Keycloak container to make it a proper int test
+	@Test
+	void hasDefaultSubjectForMockUsers()
+	{
+		this.createMockUser();
+
+		assertEquals(DEFAULT_SUBJECT, userAuthService.getIdentity());
 	}
 }

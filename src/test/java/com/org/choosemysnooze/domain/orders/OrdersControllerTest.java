@@ -29,7 +29,6 @@ public class OrdersControllerTest extends BaseControllerTest
         mockMvc = MockMvcBuilders.standaloneSetup(ordersController).build();
     }
 
-    // @TODO: Make this test not suck. Should be an integration test. Kinda no point just testing the controller
     @Test
     public void testUsersCanHaveOrders() throws Exception
     {

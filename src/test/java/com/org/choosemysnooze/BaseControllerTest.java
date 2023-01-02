@@ -9,7 +9,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
-public class BaseControllerTest
+public class BaseControllerTest implements CreatesMockUsers
 {
     @Spy
     protected Pipeline pipeline;
