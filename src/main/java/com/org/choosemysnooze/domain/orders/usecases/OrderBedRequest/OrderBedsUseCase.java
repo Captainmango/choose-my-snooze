@@ -1,13 +1,13 @@
 package com.org.choosemysnooze.domain.orders.usecases.OrderBedRequest;
 
 import an.awesome.pipelinr.Command;
+import an.awesome.pipelinr.Pipeline;
 import an.awesome.pipelinr.Voidy;
 import com.org.choosemysnooze.common.exceptions.NotFoundException;
 import com.org.choosemysnooze.domain.beds.BedRepository;
 import com.org.choosemysnooze.domain.orders.Order;
 import com.org.choosemysnooze.domain.orders.OrderRepository;
-import com.org.choosemysnooze.domain.users.UserAuthService;
-import com.org.choosemysnooze.domain.users.UserRepository;
+import com.org.choosemysnooze.domain.users.usecases.FindUserByIdentity.FindUserByIdentityRequest;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -17,35 +17,28 @@ public class OrderBedsUseCase implements Command.Handler<OrderBedsRequest, Voidy
 
     private final BedRepository bedRepository;
 
-    private final UserRepository userRepository;
-
-    private final UserAuthService userAuthService;
+    private final Pipeline pipeline;
 
     public OrderBedsUseCase(
             OrderRepository orderRepository,
             BedRepository bedRepository,
-            UserRepository userRepository,
-            UserAuthService userAuthService
+            Pipeline pipeline
     ) {
         this.orderRepository = orderRepository;
         this.bedRepository = bedRepository;
-        this.userRepository = userRepository;
-        this.userAuthService = userAuthService;
+        this.pipeline = pipeline;
     }
 
     @Override
     public Voidy handle(OrderBedsRequest orderBedsRequest)
     {
-        var beds = bedRepository.findByProductCodeIn(orderBedsRequest.getBedIds());
+        var beds = bedRepository.findByProductCodeIn(orderBedsRequest.getBedProductCodes());
 
         if (beds.isEmpty()) {
             throw new NotFoundException("No beds found with supplied IDs");
         }
 
-        var user = userRepository.findByIdentity(userAuthService.getIdentity())
-                .orElseThrow(
-                        () -> new NotFoundException("User not found")
-                );
+        var user = new FindUserByIdentityRequest().execute(pipeline);
 
         orderRepository.save(Order.builder()
                 .user(user)

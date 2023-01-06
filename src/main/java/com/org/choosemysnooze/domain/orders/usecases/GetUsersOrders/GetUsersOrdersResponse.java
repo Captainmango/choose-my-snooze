@@ -1,4 +1,4 @@
-package com.org.choosemysnooze.domain.orders.usecases.getUsersOrders;
+package com.org.choosemysnooze.domain.orders.usecases.GetUsersOrders;
 
 import com.org.choosemysnooze.domain.orders.Order;
 import lombok.AllArgsConstructor;

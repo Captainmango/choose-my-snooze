@@ -2,7 +2,7 @@ package com.org.choosemysnooze.integration;
 
 import com.org.choosemysnooze.IntegratedKeycloakTest;
 import com.org.choosemysnooze.domain.orders.OrdersController;
-import com.org.choosemysnooze.domain.users.UserAuthService;
+import com.org.choosemysnooze.domain.users.usecases.GetIdentity.GetIdentityRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,9 +16,6 @@ class ChooseMySnoozeApplicationTests extends IntegratedKeycloakTest {
 	@Autowired
 	private OrdersController ordersController;
 
-	@Autowired
-	private UserAuthService userAuthService;
-
 	@Test
 	void contextLoads()
 	{
@@ -31,6 +28,6 @@ class ChooseMySnoozeApplicationTests extends IntegratedKeycloakTest {
 	{
 		this.createMockUser();
 
-		assertEquals(DEFAULT_SUBJECT, userAuthService.getIdentity());
+		assertEquals(DEFAULT_SUBJECT, new GetIdentityRequest().execute(pipeline));
 	}
 }

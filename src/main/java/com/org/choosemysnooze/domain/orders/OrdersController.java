@@ -2,7 +2,7 @@ package com.org.choosemysnooze.domain.orders;
 
 import com.org.choosemysnooze.common.BaseController;
 import com.org.choosemysnooze.domain.orders.usecases.OrderBedRequest.OrderBedsRequest;
-import com.org.choosemysnooze.domain.orders.usecases.getUsersOrders.GetUsersOrdersRequest;
+import com.org.choosemysnooze.domain.orders.usecases.GetUsersOrders.GetUsersOrdersRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +15,6 @@ public class OrdersController extends BaseController
     @GetMapping(path = "", produces = "application/json")
     public ResponseEntity<?> getUsersOrders() {
         var response = pipeline.send(GetUsersOrdersRequest.builder()
-                .userIdentity(userAuthService.getIdentity())
                 .build());
 
         return ResponseEntity.ok().body(response);

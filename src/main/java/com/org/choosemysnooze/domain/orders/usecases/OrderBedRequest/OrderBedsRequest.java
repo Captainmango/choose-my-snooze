@@ -15,5 +15,5 @@ import java.util.List;
 @NoArgsConstructor
 public class OrderBedsRequest implements Command<Voidy>
 {
-    private List<String> bedIds;
+    private List<String> bedProductCodes;
 }

@@ -1,4 +1,4 @@
-package com.org.choosemysnooze.domain.orders.usecases.getUsersOrders;
+package com.org.choosemysnooze.domain.orders.usecases.GetUsersOrders;
 
 import an.awesome.pipelinr.Command;
 import lombok.AllArgsConstructor;

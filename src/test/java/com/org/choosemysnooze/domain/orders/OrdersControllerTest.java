@@ -6,8 +6,8 @@ import com.org.choosemysnooze.CreatesMockUsers;
 import com.org.choosemysnooze.common.exceptions.NotFoundException;
 import com.org.choosemysnooze.domain.beds.Bed;
 import com.org.choosemysnooze.domain.orders.usecases.OrderBedRequest.OrderBedsRequest;
-import com.org.choosemysnooze.domain.orders.usecases.getUsersOrders.GetUsersOrdersRequest;
-import com.org.choosemysnooze.domain.orders.usecases.getUsersOrders.GetUsersOrdersResponse;
+import com.org.choosemysnooze.domain.orders.usecases.GetUsersOrders.GetUsersOrdersRequest;
+import com.org.choosemysnooze.domain.orders.usecases.GetUsersOrders.GetUsersOrdersResponse;
 import com.org.choosemysnooze.domain.users.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -53,7 +53,6 @@ public class OrdersControllerTest extends BaseSystemTest
                     .build()
                 )).build();
 
-        when(userAuthService.getIdentity()).thenReturn(CreatesMockUsers.DEFAULT_SUBJECT);
         when(pipeline.send(request)).thenReturn(response);
 
         mockMvc.perform(get("/api/v1/orders")).andExpectAll(
@@ -61,14 +60,13 @@ public class OrdersControllerTest extends BaseSystemTest
                 jsonPath("$.orders", hasSize(1))
         );
 
-        verify(userAuthService).getIdentity();
         verify(pipeline).send(request);
     }
     @Test
     public void testUserCanPlaceOrderForBed() throws Exception
     {
         var request = OrderBedsRequest.builder()
-                .bedIds(List.of("b"))
+                .bedProductCodes(List.of("b"))
                 .build();
 
         var jsonRequest = mapper.writeValueAsString(request);
@@ -89,7 +87,7 @@ public class OrdersControllerTest extends BaseSystemTest
     public void testOrderNotPlacedForNonexistentBedNoOrderPlaced() throws Exception
     {
         var request = OrderBedsRequest.builder()
-                .bedIds(List.of("random string"))
+                .bedProductCodes(List.of("random string"))
                 .build();
 
         var jsonRequest = mapper.writeValueAsString(request);
@@ -110,7 +108,7 @@ public class OrdersControllerTest extends BaseSystemTest
     public void testOrderMultipleBeds() throws Exception
     {
         var request = OrderBedsRequest.builder()
-                .bedIds(List.of("a", "b", "c"))
+                .bedProductCodes(List.of("a", "b", "c"))
                 .build();
 
         var jsonRequest = mapper.writeValueAsString(request);
@@ -131,7 +129,7 @@ public class OrdersControllerTest extends BaseSystemTest
     public void testOrderMultipleBedsSomeExistSomeDoNotPartialOrderPlaced() throws Exception
     {
         var request = OrderBedsRequest.builder()
-                .bedIds(List.of("a", "random string", "b"))
+                .bedProductCodes(List.of("a", "random string", "b"))
                 .build();
 
         var jsonRequest = mapper.writeValueAsString(request);
