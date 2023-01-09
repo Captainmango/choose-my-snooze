@@ -1,6 +1,7 @@
 package com.org.choosemysnooze.domain.orders;
 
 import com.org.choosemysnooze.common.BaseController;
+import com.org.choosemysnooze.domain.beds.usecases.FindBedsByProductCodeRequest;
 import com.org.choosemysnooze.domain.orders.usecases.OrderBedRequest.OrderBedsRequest;
 import com.org.choosemysnooze.domain.orders.usecases.GetUsersOrders.GetUsersOrdersRequest;
 import org.springframework.http.HttpStatus;
@@ -21,9 +22,10 @@ public class OrdersController extends BaseController
     }
 
     @PostMapping(path = "", produces = "application/json")
-    public ResponseEntity<?> placeOrderForBed(@RequestBody OrderBedsRequest orderBedsRequest)
+    public ResponseEntity<?> placeOrderForBed(@RequestBody FindBedsByProductCodeRequest bedsByProductCodeRequest)
     {
-        pipeline.send(orderBedsRequest);
+        var beds = new FindBedsByProductCodeRequest(bedsByProductCodeRequest.getBedProductCodes()).execute(pipeline);
+        pipeline.send(OrderBedsRequest.builder().beds(beds).build());
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

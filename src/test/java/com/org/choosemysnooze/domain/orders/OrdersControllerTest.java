@@ -5,6 +5,7 @@ import com.org.choosemysnooze.BaseSystemTest;
 import com.org.choosemysnooze.CreatesMockUsers;
 import com.org.choosemysnooze.common.exceptions.NotFoundException;
 import com.org.choosemysnooze.domain.beds.Bed;
+import com.org.choosemysnooze.domain.beds.usecases.FindBedsByProductCodeRequest;
 import com.org.choosemysnooze.domain.orders.usecases.OrderBedRequest.OrderBedsRequest;
 import com.org.choosemysnooze.domain.orders.usecases.GetUsersOrders.GetUsersOrdersRequest;
 import com.org.choosemysnooze.domain.orders.usecases.GetUsersOrders.GetUsersOrdersResponse;
@@ -65,13 +66,16 @@ public class OrdersControllerTest extends BaseSystemTest
     @Test
     public void testUserCanPlaceOrderForBed() throws Exception
     {
-        var request = OrderBedsRequest.builder()
-                .bedProductCodes(List.of("b"))
+        var beds = List.of("b");
+
+        var orderBedsRequest = OrderBedsRequest.builder()
                 .build();
 
-        var jsonRequest = mapper.writeValueAsString(request);
+        var bedsRequest = FindBedsByProductCodeRequest.builder()
+                .bedProductCodes(beds)
+                .build();
 
-        when(pipeline.send(request)).thenReturn(new Voidy());
+        var jsonRequest = mapper.writeValueAsString(bedsRequest);
 
         mockMvc.perform(post("/api/v1/orders")
                 .content(jsonRequest)
@@ -80,7 +84,8 @@ public class OrdersControllerTest extends BaseSystemTest
                 status().isCreated()
         );
 
-        verify(pipeline).send(request);
+        verify(pipeline).send(orderBedsRequest);
+        verify(pipeline).send(bedsRequest);
     }
 
     @Test
