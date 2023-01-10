@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+set -e -u -o pipefail
+
+if [[ $1 == "build" ]]; then
+  docker build . -t cms-app -f ./builds/staging/Dockerfile
+  exit 0
+fi
+
+if [[ $1 == "deploy" ]]; then
+  docker compose -f staging.yml up -d
+  exit 0
+fi
+
+if [[ $1 == "down" ]]; then
+  docker compose -f staging.yml down
+  exit 0
+fi
+
+echo "USAGE: bin/staging [OPTIONS]"
+echo "-----"
+echo "{build : build the Docker image for staging}"
+echo "{deploy : deploy the staging stack}"
+echo "{down : tear down the staging stack}"
+
+exit 0
+
+

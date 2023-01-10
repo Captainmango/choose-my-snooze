@@ -1,6 +1,20 @@
 version: "3.1"
 services:
+  cys-app:
+    container_name: app
+    image: cms-app:latest
+    network_mode: host
+    restart: on-failure
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - keycloak
+
   db:
+    container_name: db
     image: postgres:13
     volumes:
       - pg_data:/var/lib/postgresql/data
@@ -12,6 +26,7 @@ services:
       - POSTGRES_USER=${PG_USER}
 
   keycloak-db:
+    container_name: keycloak-db
     image: bitnami/postgresql:latest
     networks:
       - keycloak
@@ -25,7 +40,7 @@ services:
       - POSTGRESQL_DATABASE=${KEYCLOAK_DB}
 
   keycloak:
-    container_name: keycloak-server
+    container_name: keycloak
     image: docker.io/bitnami/keycloak:latest
     networks:
       - keycloak

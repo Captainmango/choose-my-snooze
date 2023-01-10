@@ -9,7 +9,7 @@ plugins {
 }
 
 group = 'com.org'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.1'
 sourceCompatibility = '17'
 
 configurations {
@@ -20,6 +20,12 @@ configurations {
 
 repositories {
 	mavenCentral()
+}
+
+jar {
+	manifest {
+		attributes "Main-Class": "com/org/choosemysnooze/ChooseMySnoozeApplication"
+	}
 }
 
 dependencies {
@@ -75,8 +81,8 @@ liquibase {
 		main {
 			changeLogFile "$MIGR_NAME"
 			url "jdbc:postgresql://${env.fetchOrNull('PG_HOST')}:${env.fetchOrNull('PG_PORT')}/${env.fetchOrNull('PG_DATABASE')}"
-			username "${env.PG_USER.orElse("")}"
-			password "${env.PG_PASSWORD.orElse("")}"
+			username "${env.fetchOrNull("PG_USER")}"
+			password "${env.fetchOrNull("PG_PASSWORD")}"
 			classpath "$rootDir"
 			driver "org.postgresql.Driver"
 			referenceUrl "hibernate:spring:com.org.choosemysnooze?dialect=org.hibernate.dialect.PostgreSQLDialect" +
@@ -120,3 +126,4 @@ def profile = 'prod'
 bootRun {
 	systemProperty "spring.profiles.active", profile
 }
+
