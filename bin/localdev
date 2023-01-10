@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+set -e -u -o pipefail
+
+if [[ $1 == "build" ]]; then
+  docker build . -t cms-app -f ./builds/localdev/Dockerfile
+  exit 0
+fi
+
+if [[ $1 == "deploy" ]]; then
+  docker compose -f localdev.yml up -d
+  exit 0
+fi
+
+if [[ $1 == "down" ]]; then
+  docker compose -f localdev.yml down
+  exit 0
+fi
+
+echo "USAGE: bin/localdev [OPTIONS]"
+echo "-----"
+echo "{build : build the Docker image for localdev}"
+echo "{deploy : deploy the localdev stack}"
+echo "{down : tear down the localdev stack}"
+
+exit 0
+
+

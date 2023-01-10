@@ -27,7 +27,7 @@ spring:
       client:
         provider:
           keycloak:
-            issuer-uri: "http://localhost:8080/realms/choose-my-snooze"
+            issuer-uri: http://${env.KEYCLOAK_HOST}:${env.KEYCLOAK_PORT}/realms/choose-my-snooze
             user-name-attribute: preferred_username
         registration:
           keycloak:

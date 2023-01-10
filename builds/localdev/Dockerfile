@@ -39,7 +39,5 @@ ENV KEYCLOAK_ADMIN_USER=$KEYCLOAK_ADMIN_USER
 ENV KEYCLOAK_ADMIN_PASSWORD=$KEYCLOAK_ADMIN_PASSWORD
 
 COPY --from=builder /workspace/app/build/libs/choose-my-snooze-0.0.1.jar .
-EXPOSE 8080
-EXPOSE 5431
-EXPOSE $PORT
+EXPOSE $APP_PORT
 ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=prod", "choose-my-snooze-0.0.1.jar"]
