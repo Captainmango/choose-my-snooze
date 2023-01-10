@@ -1,11 +1,9 @@
 package com.org.choosemysnooze.domain.orders;
 
-import an.awesome.pipelinr.Voidy;
 import com.org.choosemysnooze.BaseSystemTest;
-import com.org.choosemysnooze.CreatesMockUsers;
 import com.org.choosemysnooze.common.exceptions.NotFoundException;
 import com.org.choosemysnooze.domain.beds.Bed;
-import com.org.choosemysnooze.domain.beds.usecases.FindBedsByProductCodeRequest;
+import com.org.choosemysnooze.domain.beds.usecases.FindBedsByProductCode.FindBedsByProductCodeRequest;
 import com.org.choosemysnooze.domain.orders.usecases.OrderBedRequest.OrderBedsRequest;
 import com.org.choosemysnooze.domain.orders.usecases.GetUsersOrders.GetUsersOrdersRequest;
 import com.org.choosemysnooze.domain.orders.usecases.GetUsersOrders.GetUsersOrdersResponse;
@@ -43,7 +41,6 @@ public class OrdersControllerTest extends BaseSystemTest
     public void testUsersCanHaveOrders() throws Exception
     {
         var request = GetUsersOrdersRequest.builder()
-            .userIdentity(CreatesMockUsers.DEFAULT_SUBJECT)
             .build();
 
         var response = GetUsersOrdersResponse.builder()
@@ -68,11 +65,11 @@ public class OrdersControllerTest extends BaseSystemTest
     {
         var beds = List.of("b");
 
-        var orderBedsRequest = OrderBedsRequest.builder()
-                .build();
-
         var bedsRequest = FindBedsByProductCodeRequest.builder()
                 .bedProductCodes(beds)
+                .build();
+
+        var orderBedsRequest = OrderBedsRequest.builder()
                 .build();
 
         var jsonRequest = mapper.writeValueAsString(bedsRequest);
@@ -91,13 +88,13 @@ public class OrdersControllerTest extends BaseSystemTest
     @Test
     public void testOrderNotPlacedForNonexistentBedNoOrderPlaced() throws Exception
     {
-        var request = OrderBedsRequest.builder()
+        var bedsRequest = FindBedsByProductCodeRequest.builder()
                 .bedProductCodes(List.of("random string"))
                 .build();
 
-        var jsonRequest = mapper.writeValueAsString(request);
+        var jsonRequest = mapper.writeValueAsString(bedsRequest);
 
-        when(pipeline.send(request)).thenThrow(NotFoundException.class);
+        when(pipeline.send(bedsRequest)).thenThrow(NotFoundException.class);
 
         mockMvc.perform(post("/api/v1/orders")
                 .content(jsonRequest)
@@ -106,19 +103,20 @@ public class OrdersControllerTest extends BaseSystemTest
                 status().isNotFound()
         );
 
-        verify(pipeline).send(request);
+        verify(pipeline).send(bedsRequest);
     }
 
     @Test
     public void testOrderMultipleBeds() throws Exception
     {
-        var request = OrderBedsRequest.builder()
-                .bedProductCodes(List.of("a", "b", "c"))
+        var bedsRequest = FindBedsByProductCodeRequest.builder()
+                .bedProductCodes(List.of("a", "b"))
                 .build();
 
-        var jsonRequest = mapper.writeValueAsString(request);
+        var orderBedsRequest = OrderBedsRequest.builder()
+                .build();
 
-        when(pipeline.send(request)).thenReturn(new Voidy());
+        var jsonRequest = mapper.writeValueAsString(bedsRequest);
 
         mockMvc.perform(post("/api/v1/orders")
                 .content(jsonRequest)
@@ -127,19 +125,21 @@ public class OrdersControllerTest extends BaseSystemTest
                 status().isCreated()
         );
 
-        verify(pipeline).send(request);
+        verify(pipeline).send(bedsRequest);
+        verify(pipeline).send(orderBedsRequest);
     }
 
     @Test
     public void testOrderMultipleBedsSomeExistSomeDoNotPartialOrderPlaced() throws Exception
     {
-        var request = OrderBedsRequest.builder()
-                .bedProductCodes(List.of("a", "random string", "b"))
+        var bedsRequest = FindBedsByProductCodeRequest.builder()
+                .bedProductCodes(List.of("a", "b", "random string"))
                 .build();
 
-        var jsonRequest = mapper.writeValueAsString(request);
+        var orderBedsRequest = OrderBedsRequest.builder()
+                .build();
 
-        when(pipeline.send(request)).thenReturn(new Voidy());
+        var jsonRequest = mapper.writeValueAsString(bedsRequest);
 
         mockMvc.perform(post("/api/v1/orders")
                 .content(jsonRequest)
@@ -148,6 +148,7 @@ public class OrdersControllerTest extends BaseSystemTest
                 status().isCreated()
         );
 
-        verify(pipeline).send(request);
+        verify(pipeline).send(orderBedsRequest);
+        verify(pipeline).send(bedsRequest);
     }
 }

@@ -1,4 +1,4 @@
-package com.org.choosemysnooze.domain.beds.usecases;
+package com.org.choosemysnooze.domain.beds.usecases.FindBedsByProductCode;
 
 import an.awesome.pipelinr.Command;
 import com.org.choosemysnooze.common.exceptions.NotFoundException;
