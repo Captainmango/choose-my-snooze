@@ -27,9 +27,12 @@ class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/api/**")
-                .hasRole("USER")
-                .anyRequest()
-                .permitAll();
+                .hasRole("USER");
+
+        // TODO: make this into a resource server https://www.baeldung.com/spring-security-oauth-resource-server
+        http.authorizeRequests()
+                .antMatchers("/actuator/**").permitAll();
+
         http.oauth2Login()
                 .and()
                 .logout()
