@@ -24,6 +24,7 @@ services:
       - POSTGRESQL_PASSWORD=${KEYCLOAK_DB_PASSWORD}
       - POSTGRESQL_DATABASE=${KEYCLOAK_DB}
 
+# Need to do a realm import as everything breaks if the realm isnt set up
   keycloak:
     container_name: keycloak-server
     image: docker.io/bitnami/keycloak:latest
