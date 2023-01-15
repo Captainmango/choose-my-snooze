@@ -4,9 +4,12 @@ import com.org.choosemysnooze.common.BaseController;
 import com.org.choosemysnooze.domain.beds.usecases.FindBedsByProductCode.FindBedsByProductCodeRequest;
 import com.org.choosemysnooze.domain.orders.usecases.OrderBedRequest.OrderBedsRequest;
 import com.org.choosemysnooze.domain.orders.usecases.GetUsersOrders.GetUsersOrdersRequest;
+import com.org.choosemysnooze.domain.users.usecases.GetIdentity.GetIdentityRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -14,9 +17,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/orders")
 public class OrdersController extends BaseController
 {
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(path = "", produces = "application/json")
-    public ResponseEntity<?> getUsersOrders() {
+    public ResponseEntity<?> getUsersOrders()
+    {
         var response = pipeline.send(GetUsersOrdersRequest.builder()
                 .build());
 
