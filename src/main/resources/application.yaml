@@ -24,16 +24,10 @@ spring:
 
   security:
     oauth2:
-      client:
-        provider:
-          keycloak:
-            issuer-uri: http://${env.KEYCLOAK_HOST}:${env.KEYCLOAK_PORT}/realms/choose-my-snooze
-            user-name-attribute: preferred_username
-        registration:
-          keycloak:
-            client-id: "cms-app"
-            authorization-grant-type: authorization_code
-            scope: openid
+      resourceserver:
+        jwt:
+          issuer-uri: http://${env.KEYCLOAK_HOST}:${env.KEYCLOAK_PORT}/realms/${env.KEYCLOAK_REALM}
+          jwk-set-uri: http://${env.KEYCLOAK_HOST}:${env.KEYCLOAK_PORT}/realms/${env.KEYCLOAK_REALM}/protocol/openid-connect/certs
 
 management:
   endpoints:
