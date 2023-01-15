@@ -9,10 +9,23 @@ This project is a fake one focused on improving DevOps skills and multi-tenancy.
   - that also has a backing database
 
 Ideally, I'd like to add in:
-- SMTP server for sending mail
 - A front end to drive the API
 - Prometheus instance for metrics
-- Redis for caching stuff (not sure what needs caching yet)
+- Grafana for reports and visualisations
+
+To Do list:
+- Create a seeder CLI tool, so we can have data in the API without funny business
+- Get JobRunr installed and configured
+- Create prometheus custom image and configuration
+- Create Grafana custom image and configuration
+- Create mailer class(es) so that we can send emails
+  - Hook up with SES to stay with Amazon
+  - Hook up with mailtrap to catch emails going out in development
+- Set up Gatling, so we can simulate lots of traffic on the system
+- Set up Swarm mode yml, so we can run a cluster of the project
+- Get Test reporting sorted so we know what failed
+- Set up image registry with Amazon ECR
+- Set up deployment pipeline onto ECS
 
 The idea is to build deployment pipelines and upload docker images to a container registry (AWS ECR) and use these in deployment builds to whatever infrastructure I want to use (not wholly settled yet, but will likely be AWS EC2 instances)
 
@@ -28,7 +41,16 @@ $ docker compose [SERVICE_NAME] up -d
 ```
 This will also allow you to continue using the shell used to initiate the command. 
 
-Once the services have all come up, use the gradle wrapper to bring up the main API.
+### Keycloak
+
+Once the services have all come up, you will need to set up Keycloak so that it will work with the environment you have set up. The realm-export.json in the root of the project needs to be used as an import in Keycloak.
+
+The Keycloak service will be running at whatever host and port you specified in the config (if running locally, the container will use localhost for the host. This cannot be changed.)
+
+Go to the Keycloak server via the URL and use the credentials from you .env file to log in. Once logged in, select the dropdown, then create realm. From here, click browse and select the realm-export.json in the root of the project. This will then create the projects realm with all settings used in development.
+
+### API 
+Once all the services are up, and Keycloak is configured, use the gradle wrapper to bring up the main API.
 
 ```bash
 $ ./gradlew bootRun

@@ -2203,35 +2203,5 @@
   },
   "clientPolicies": {
     "policies": []
-  },
-
-  "users": [
-    {
-      "id": "6f83bf65-196b-41db-b49f-83dd2277aa77",
-      "createdTimestamp": 1667951759686,
-      "username": "edwardo",
-      "enabled": true,
-      "totp": false,
-      "emailVerified": true,
-      "firstName": "Edward",
-      "lastName": "Heaver",
-      "email": "edward.heaver01@gmail.com",
-      "disableableCredentialTypes": [],
-      "requiredActions": [],
-      "notBefore": 0,
-      "access": {
-        "manageGroupMembership": true,
-        "view": true,
-        "mapRoles": true,
-        "impersonate": true,
-        "manage": true
-      },
-      "credentials": [
-        {
-          "type": "password",
-          "value": "password"
-        }
-      ]
-    }
-  ]
+  }
 }
