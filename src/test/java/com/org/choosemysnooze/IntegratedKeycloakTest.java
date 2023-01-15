@@ -22,10 +22,10 @@ public abstract class IntegratedKeycloakTest implements CreatesMockUsers
             .withAdminPassword("password")
             .withExposedPorts(8080);
 
-    // @TODO: Figure out why this doesn't work properly. Seems to not be overwriting the test application.properties
     @DynamicPropertySource
     static void registerNewIssuerUri(DynamicPropertyRegistry registry)
     {
-        registry.add("spring.security.oauth2.client.provider.keycloak.issuer-uri", () -> keycloak.getAuthServerUrl() + "realms/choose-my-snooze");
+        registry.add("spring.security.oauth2.resourceserver.jwt.issuer-uri", () -> keycloak.getAuthServerUrl() + "realms/choose-my-snooze");
+        registry.add("spring.security.oauth2.resourceserver.jwt.jwk-set-uri", () -> keycloak.getAuthServerUrl() + "realms/choose-my-snooze/protocol/openid-connect/certs");
     }
 }

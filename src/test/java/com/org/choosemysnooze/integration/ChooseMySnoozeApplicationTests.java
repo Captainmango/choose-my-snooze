@@ -22,7 +22,6 @@ class ChooseMySnoozeApplicationTests extends IntegratedKeycloakTest {
 		assertNotNull(ordersController);
 	}
 
-	// @TODO: Change this for an actual call to the Keycloak container to make it a proper int test
 	@Test
 	void hasDefaultSubjectForMockUsers()
 	{
@@ -30,4 +29,6 @@ class ChooseMySnoozeApplicationTests extends IntegratedKeycloakTest {
 
 		assertEquals(DEFAULT_SUBJECT, new GetIdentityRequest().execute(pipeline));
 	}
+
+	//@TODO: Look at creating users via the admin client for integration tests
 }

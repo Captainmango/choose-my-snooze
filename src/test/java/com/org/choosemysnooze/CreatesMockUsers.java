@@ -32,15 +32,8 @@ public interface CreatesMockUsers
                         "kid", "fffffff"
                 ),
                 Map.of(
-                        "realm_access", """
-                                            {
-                                            "roles": [
-                                            "default-roles-choose-my-snooze",
-                                            "offline_access",
-                                            "uma_authorization",
-                                            "USER"
-                                            ]}"
-                                            """,
+                        "sub", DEFAULT_SUBJECT,
+                        "roles", "USER",
                         "email", "test@test.com"
                 )
         );
