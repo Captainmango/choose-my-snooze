@@ -1,6 +1,7 @@
 version: "3.1"
 services:
   db:
+    container_name: app-db
     image: postgres:13
     volumes:
       - pg_data:/var/lib/postgresql/data
@@ -12,6 +13,7 @@ services:
       - POSTGRES_USER=${PG_USER}
 
   keycloak-db:
+    container_name: keycloak-db
     image: bitnami/postgresql:latest
     networks:
       - keycloak
